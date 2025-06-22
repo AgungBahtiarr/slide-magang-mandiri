@@ -1,6 +1,7 @@
+import { serve } from "bun";
 import homepage from "./src/index.html";
 
-Bun.serve({
+const server = serve({
   port: 3000,
   routes: {
     "/": homepage,
