@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presentasi Laporan Magang Interaktif - Agung Bahtiar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      body,
+      html {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc; /* slate-50 */
+        color: #1e293b; /* slate-800 */
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+      .slide {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.6s ease-in-out, visibility 0.6s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem 4rem;
+      }
+      .slide.active {
+        opacity: 1;
+        visibility: visible;
+        z-index: 10;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 450px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        max-height: 400px;
+      }
+      .progress-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: #cbd5e1; /* slate-300 */
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .progress-dot.active {
+        background-color: #f47f20; /* New Orange */
+      }
+      .process-step-content,
+      .schema-table,
+      .use-case-diagram {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s ease-in-out;
+      }
+      .db-table {
+        background-color: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        font-size: 0.75rem;
+      }
+      .db-table h5 {
+        font-weight: 600;
+        color: #1e293b;
+        border-bottom: 1px solid #cbd5e1;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.5rem;
+      }
+      .web-preview {
+        background-color: #ffffff;
+        border: 8px solid #333;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        width: 100%;
+        height: 300px; /* Increased height for better view */
+      }
+      .web-preview-header {
+        background-color: #333;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      .web-preview-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .web-preview-content {
+        width: 100%;
+        height: calc(100% - 24px); /* Adjust height based on header */
+      }
+      .web-preview-content iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main id="presentation-container" class="relative w-full h-full">
+      <!-- Slide 1: Beranda -->
+      <section id="slide-1" class="slide active">
+        <div class="text-center max-w-4xl">
+          <span class="font-semibold" style="color: #f47f20"
+            >Magang Mandiri di PT. Lare Osing Ndo</span
+          >
+          <h1
+            class="mt-4 text-4xl md:text-6xl font-bold tracking-tight text-slate-900"
+          >
+            Pembuatan Web dan Pengelolaan Server
+          </h1>
+          <p class="mt-6 text-lg text-slate-600">
+            Presentasi Interaktif oleh:
+            <strong style="color: #498ac9">Agung Bahtiar</strong>
+          </p>
+          <p class="mt-2 text-md text-slate-500">
+            Periode: Februari - Juni 2025
+          </p>
+        </div>
+      </section>
+
+      <!-- Slide 2: Konteks Magang -->
+      <section id="slide-2" class="slide">
+        <div class="max-w-5xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Konteks Magang
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">
+                Tujuan Magang
+              </h3>
+              <p class="mt-2 text-slate-600 text-sm">
+                Pelaksanaan magang ini bertujuan untuk mencapai beberapa sasaran
+                utama, baik bagi mahasiswa, institusi pendidikan, maupun mitra
+                industri.
+              </p>
+              <ul
+                class="mt-4 space-y-2 text-slate-600 text-sm list-disc list-inside"
+              >
+                <li>
+                  Meningkatkan pengalaman dan kompetensi di dunia kerja nyata.
+                </li>
+                <li>
+                  Memberikan umpan balik kepada program studi untuk penyesuaian
+                  kurikulum.
+                </li>
+                <li>Mempercepat penyerapan alumni ke pasar kerja.</li>
+                <li>
+                  Mengaplikasikan ilmu untuk melatih keterampilan dan adaptasi
+                  budaya kerja.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h3 class="text-center font-semibold mb-4">
+                Distribusi Manfaat Magang
+              </h3>
+              <div class="chart-container">
+                <canvas id="manfaatChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 3: Profil Perusahaan -->
+      <section id="slide-3" class="slide">
+        <div class="max-w-4xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Profil PT. Lare Osing Ndo
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">
+                Sejarah & Perkembangan
+              </h3>
+              <div class="mt-4 text-slate-600 space-y-2 text-sm">
+                <p>
+                  <strong>Maret 2022:</strong> Didirikan dengan visi
+                  mengembangkan layanan internet berkualitas di Banyuwangi.
+                </p>
+                <p>
+                  <strong>16 Agustus 2022:</strong> Lulus Uji Laik Operasi (ULO)
+                  dan mulai beroperasi secara resmi sebagai ISP.
+                </p>
+                <p>
+                  <strong>Saat Ini:</strong> Berkembang pesat dan dipercaya oleh
+                  berbagai klien korporasi dan institusi pendidikan.
+                </p>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">
+                Struktur & Posisi
+              </h3>
+              <ul class="mt-4 space-y-3 text-slate-600 text-sm">
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong class="font-semibold">Direktur Utama:</strong>
+                    Listina Adkhiya
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong class="font-semibold">CTO & Mentor:</strong> Agus
+                    Priyo Utomo
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong class="font-semibold">Posisi Saya:</strong> Intern
+                    (Software Developer & System Administrator)
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 4: Perjalanan & Teknologi -->
+      <section id="slide-4" class="slide">
+        <div class="max-w-6xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Perjalanan Magang: Dari Server ke Software
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 items-center">
+            <div
+              class="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="text-xl font-semibold text-slate-800 text-center mb-4">
+                Fokus Kegiatan
+              </h3>
+              <div class="chart-container !max-w-full">
+                <canvas id="kegiatanChart"></canvas>
+              </div>
+            </div>
+            <div class="lg:col-span-3">
+              <h3 class="text-xl font-semibold text-slate-800 mb-4">
+                Teknologi yang Digunakan
+              </h3>
+              <div
+                class="grid grid-cols-2 md:grid-cols-3 gap-3"
+                id="tech-stack-container"
+              >
+                <!-- Tech cards will be injected here by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Proyek Infrastruktur -->
+      <section id="slide-5" class="slide">
+        <div class="max-w-5xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Proyek Infrastruktur & Layanan Internal
+          </h2>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center"
+          >
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="font-bold text-lg" style="color: #498ac9">
+                DNS Server
+              </h3>
+              <p class="text-sm mt-2 text-slate-600">
+                Instalasi & konfigurasi BIND9 untuk domain `laros.net.id` di
+                VMware.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="font-bold text-lg" style="color: #498ac9">
+                Reverse Proxy
+              </h3>
+              <p class="text-sm mt-2 text-slate-600">
+                Implementasi NGINX sebagai reverse proxy dan web server utama.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="font-bold text-lg" style="color: #498ac9">
+                Hosting Platform
+              </h3>
+              <p class="text-sm mt-2 text-slate-600">
+                Setup Coolify sebagai platform hosting modern untuk deployment
+                aplikasi.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="font-bold text-lg" style="color: #498ac9">
+                Cloud Drive
+              </h3>
+              <p class="text-sm mt-2 text-slate-600">
+                Instalasi OwnCloud sebagai solusi private cloud drive internal
+                perusahaan.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 6: Company Profile -->
+      <section id="slide-6" class="slide">
+        <div class="max-w-6xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Proyek Web: Company Profile PT. Lare Osing Ndo
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">
+                Tujuan & Teknologi
+              </h3>
+              <p class="mt-2 text-sm text-slate-600">
+                Merancang dan mengembangkan gerbang digital yang
+                merepresentasikan identitas dan layanan perusahaan kepada klien.
+                Website ini dibangun dengan pendekatan modern untuk memastikan
+                performa dan responsivitas.
+              </p>
+              <ul
+                class="mt-4 space-y-2 text-slate-600 text-sm list-disc list-inside"
+              >
+                <li><strong>Teknologi:</strong> Astro, Tailwind CSS.</li>
+                <li>
+                  <strong>Deployment:</strong> Dideploy di platform Coolify.
+                </li>
+                <li>
+                  <strong>Keamanan:</strong> Konfigurasi HTTPS dengan Let's
+                  Encrypt via NGINX.
+                </li>
+              </ul>
+            </div>
+            <div class="web-preview">
+              <div class="web-preview-header">
+                <div
+                  class="web-preview-dot"
+                  style="background-color: #f87171"
+                ></div>
+                <div
+                  class="web-preview-dot"
+                  style="background-color: #fbbd23"
+                ></div>
+                <div
+                  class="web-preview-dot"
+                  style="background-color: #34d399"
+                ></div>
+              </div>
+              <div class="web-preview-content">
+                <iframe
+                  src="https://laros.net.id"
+                  title="Pratinjau Website laros.net.id"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 7: Proyek 83-Connect - Overview -->
+      <section id="slide-7" class="slide">
+        <div class="max-w-6xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Proyek Utama: 83-Connect
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h3 class="font-semibold text-xl text-slate-800">
+                Latar Belakang & Solusi
+              </h3>
+              <p class="mt-2 text-sm text-slate-600">
+                Proses administrasi surat menyurat di Korem 83 Malang yang
+                manual digantikan dengan aplikasi web terpusat untuk
+                mengotomatisasi seluruh alur kerja, dari penerimaan, disposisi,
+                hingga pengarsipan digital.
+              </p>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 flex flex-col items-center justify-center text-center h-full"
+            >
+              <h3 class="font-semibold text-xl text-slate-800">
+                Pratinjau Aplikasi
+              </h3>
+              <p class="mt-2 text-sm text-slate-600">
+                Aplikasi web 83-Connect adalah sistem internal yang memerlukan
+                login. Klik tombol di bawah untuk mengunjungi halaman loginnya.
+              </p>
+              <a
+                href="https://kom.laros.net.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="mt-6 inline-block text-white font-bold py-2 px-6 rounded-lg transition hover:opacity-90"
+                style="background-color: #f47f20"
+              >
+                Buka 83-Connect
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 8: Proyek 83-Connect - Arsitektur -->
+      <section id="slide-8" class="slide">
+        <div class="max-w-6xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Arsitektur Sistem 83-Connect
+          </h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="text-xl font-semibold text-slate-800 mb-4">
+                Skema Database (Disederhanakan)
+              </h3>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="db-table">
+                  <h5>letters</h5>
+                  <ul>
+                    <li>id</li>
+                    <li>number</li>
+                    <li>sender</li>
+                    <li>subject</li>
+                    <li>file_path</li>
+                    <li>status</li>
+                  </ul>
+                </div>
+                <div class="db-table">
+                  <h5>users</h5>
+                  <ul>
+                    <li>id</li>
+                    <li>name</li>
+                    <li>nrp / nip</li>
+                    <li>password</li>
+                    <li>position_id</li>
+                    <li>sector_id</li>
+                  </ul>
+                </div>
+                <div class="db-table">
+                  <h5>dispositions</h5>
+                  <ul>
+                    <li>id</li>
+                    <li>letter_id</li>
+                    <li>from_user_id</li>
+                    <li>instruction</li>
+                    <li>status</li>
+                  </ul>
+                </div>
+                <div class="db-table">
+                  <h5>disposition_trackings</h5>
+                  <ul>
+                    <li>id</li>
+                    <li>disposition_id</li>
+                    <li>user_id</li>
+                    <li>action</li>
+                    <li>note</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200"
+            >
+              <h3 class="text-xl font-semibold text-slate-800 mb-4">
+                Diagram Use Case
+              </h3>
+              <div class="flex space-x-4 items-start text-sm">
+                <div class="w-1/4 space-y-2">
+                  <div
+                    class="p-2 border border-slate-300 rounded font-semibold text-center"
+                  >
+                    Admin
+                  </div>
+                  <div
+                    class="p-2 border border-slate-300 rounded font-semibold text-center"
+                  >
+                    Setum
+                  </div>
+                  <div
+                    class="p-2 border border-slate-300 rounded font-semibold text-center"
+                  >
+                    Personil Lain
+                  </div>
+                </div>
+                <div class="w-3/4 space-y-2">
+                  <div
+                    class="p-2 rounded"
+                    style="border: 1px solid #498ac9; background-color: #eff6ff"
+                  >
+                    → Mengelola Pengguna
+                  </div>
+                  <div
+                    class="p-2 rounded"
+                    style="border: 1px solid #498ac9; background-color: #eff6ff"
+                  >
+                    → Mengelola Surat Masuk
+                  </div>
+                  <div
+                    class="p-2 rounded"
+                    style="border: 1px solid #498ac9; background-color: #eff6ff"
+                  >
+                    → Membuat Disposisi
+                  </div>
+                  <div
+                    class="p-2 rounded"
+                    style="border: 1px solid #498ac9; background-color: #eff6ff"
+                  >
+                    → Melihat & Menyelesaikan Surat
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 9: Proyek 83-Connect - Fitur & Alur Kerja -->
+      <section id="slide-9" class="slide">
+        <div class="max-w-6xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Fitur Utama & Alur Kerja 83-Connect
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">
+                Fitur-Fitur Kunci
+              </h3>
+              <p class="mt-2 text-slate-600 text-sm">
+                Sistem ini dilengkapi dengan berbagai fitur untuk mendukung
+                proses birokrasi secara efisien.
+              </p>
+              <ul class="mt-4 space-y-3 text-slate-600 text-sm">
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong>Autentikasi & RBAC:</strong> Login aman dengan hak
+                    akses berbasis peran (Role-Based Access Control).
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong>Manajemen Surat:</strong> CRUD (Create, Read,
+                    Update, Delete) untuk surat masuk dan keluar dengan fitur
+                    pencarian.
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong>Alur Disposisi:</strong> Fitur untuk meneruskan
+                    surat dengan instruksi, meniru alur birokrasi nyata.
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong>Pelacakan Real-time:</strong> Riwayat lengkap untuk
+                    setiap surat, menunjukkan siapa yang sedang menangani.
+                  </div>
+                </li>
+                <li class="flex items-start">
+                  <span class="mr-3 mt-1" style="color: #f47f20">✓</span>
+                  <div>
+                    <strong>Penyimpanan S3 & PWA:</strong> Dokumen disimpan di
+                    S3 Bucket yang aman dan aplikasi mendukung PWA (Progressive
+                    Web App).
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h4 class="text-lg font-semibold text-slate-700">
+                Alur Kerja Birokrasi Surat
+              </h4>
+              <p class="text-xs text-slate-500 mb-2">
+                Klik setiap langkah untuk melihat detail proses.
+              </p>
+              <div class="space-y-1" id="process-container">
+                <!-- Process steps will be injected here by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 10: Refleksi -->
+      <section id="slide-10" class="slide">
+        <div class="max-w-4xl w-full">
+          <h2
+            class="text-center text-3xl font-bold tracking-tight text-slate-900 mb-8"
+          >
+            Refleksi & Pembelajaran
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">Kesimpulan</h3>
+              <ul
+                class="mt-4 space-y-2 text-slate-600 text-sm list-disc list-inside"
+              >
+                <li>
+                  Berhasil menerapkan keterampilan teknis sesuai standar
+                  industri, dari infrastruktur hingga aplikasi.
+                </li>
+                <li>
+                  Memperoleh ilmu mendalam tentang arsitektur jaringan dan
+                  keterkaitannya dengan pengembangan web.
+                </li>
+                <li>
+                  Mengembangkan soft skill penting seperti komunikasi dan relasi
+                  di lingkungan kerja profesional.
+                </li>
+              </ul>
+            </div>
+            <div
+              class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 h-full"
+            >
+              <h3 class="text-xl font-semibold text-slate-800">Saran</h3>
+              <ul
+                class="mt-4 space-y-2 text-slate-600 text-sm list-disc list-inside"
+              >
+                <li>
+                  <strong>Untuk Industri & Kampus:</strong> Perlunya evaluasi
+                  dan konsultasi berkala untuk meningkatkan performa mahasiswa
+                  magang.
+                </li>
+                <li>
+                  <strong>Untuk Program Magang:</strong> Perencanaan program
+                  yang lebih terstruktur dari kampus akan sangat membantu
+                  industri dalam membimbing mahasiswa.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Navigation Controls -->
+    <div
+      id="navigation-controls"
+      class="fixed bottom-0 left-0 right-0 p-4 z-20"
+    >
+      <div
+        class="max-w-sm mx-auto bg-white/50 backdrop-blur-sm rounded-full shadow-lg p-2 flex items-center justify-center space-x-4"
+      >
+        <button
+          id="prevBtn"
+          class="p-2 rounded-full hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span class="text-2xl">←</span>
+        </button>
+        <div id="progress-dots" class="flex items-center space-x-2">
+          <!-- Dots will be generated here -->
+        </div>
+        <button
+          id="nextBtn"
+          class="p-2 rounded-full hover:bg-slate-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <span class="text-2xl">→</span>
+        </button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const slides = document.querySelectorAll(".slide");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const dotsContainer = document.getElementById("progress-dots");
+        let currentSlideIndex = 0;
+
+        function showSlide(index) {
+          slides.forEach((slide, i) => {
+            slide.classList.toggle("active", i === index);
+            slide.id = `slide-${i + 1}`; // Re-assign ID for consistency
+          });
+
+          const dots = document.querySelectorAll(".progress-dot");
+          dots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === index);
+          });
+
+          prevBtn.disabled = index === 0;
+          nextBtn.disabled = index === slides.length - 1;
+          currentSlideIndex = index;
+        }
+
+        function createProgressDots() {
+          dotsContainer.innerHTML = ""; // Clear existing dots
+          slides.forEach((_, i) => {
+            const dot = document.createElement("div");
+            dot.classList.add("progress-dot");
+            dot.addEventListener("click", () => showSlide(i));
+            dotsContainer.appendChild(dot);
+          });
+        }
+
+        function nextSlide() {
+          if (currentSlideIndex < slides.length - 1) {
+            showSlide(currentSlideIndex + 1);
+          }
+        }
+
+        function prevSlide() {
+          if (currentSlideIndex > 0) {
+            showSlide(currentSlideIndex - 1);
+          }
+        }
+
+        prevBtn.addEventListener("click", prevSlide);
+        nextBtn.addEventListener("click", nextSlide);
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowRight") nextSlide();
+          else if (e.key === "ArrowLeft") prevSlide();
+        });
+
+        createProgressDots();
+        showSlide(0);
+
+        // --- Chart and Interactive Content Initializations ---
+        const manfaatCtx = document
+          .getElementById("manfaatChart")
+          ?.getContext("2d");
+        if (manfaatCtx) {
+          new Chart(manfaatCtx, {
+            type: "doughnut",
+            data: {
+              labels: ["Mahasiswa", "Perusahaan", "Universitas"],
+              datasets: [
+                {
+                  data: [50, 30, 20],
+                  backgroundColor: ["#f47f20", "#498ac9", "#9ca3af"],
+                  borderColor: "#f8fafc",
+                  borderWidth: 4,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { position: "bottom" },
+                tooltip: {
+                  callbacks: {
+                    label: (c) => `${c.label || ""}: ${c.parsed || 0}%`,
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        const kegiatanCtx = document
+          .getElementById("kegiatanChart")
+          ?.getContext("2d");
+        if (kegiatanCtx) {
+          new Chart(kegiatanCtx, {
+            type: "bar",
+            data: {
+              labels: ["Infrastruktur & SysAdmin", "Pengembangan Web"],
+              datasets: [
+                {
+                  data: [45, 55],
+                  backgroundColor: ["#f47f20", "#498ac9"],
+                  borderRadius: 4,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: (c) => `${c.raw || 0}%` } },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  grid: { display: false },
+                  ticks: { callback: (v) => v + "%" },
+                },
+                x: { grid: { display: false } },
+              },
+            },
+          });
+        }
+
+        const techStack = [
+          { name: "VMware", desc: "Virtualisasi Server" },
+          { name: "Proxmox", desc: "Virtualisasi Open-Source" },
+          { name: "Docker", desc: "Containerization" },
+          { name: "Laravel", desc: "PHP Framework" },
+          { name: "Astro", desc: "Web Framework" },
+          { name: "PostgreSQL", desc: "Database" },
+          { name: "NGINX", desc: "Reverse Proxy" },
+          { name: "Coolify", desc: "Deployment" },
+          { name: "Git", desc: "Version Control" },
+        ];
+        const techContainer = document.getElementById("tech-stack-container");
+        if (techContainer) {
+          techStack.forEach((tech) => {
+            const card = document.createElement("div");
+            card.className =
+              "bg-white p-3 rounded-lg shadow-sm border border-slate-200 text-center";
+            card.innerHTML = `<h4 class="font-semibold text-slate-800 text-sm">${tech.name}</h4><p class="text-xs text-slate-500">${tech.desc}</p>`;
+            techContainer.appendChild(card);
+          });
+        }
+
+        const processStepsData = [
+          {
+            title: "Surat Masuk",
+            detail:
+              "Surat diterima oleh Sekretariat Umum (Setum) dan dicatat datanya.",
+          },
+          {
+            title: "Disposisi DANREM",
+            detail: "Surat diteruskan ke Komandan Korem untuk arahan awal.",
+          },
+          {
+            title: "Disposisi KASREM",
+            detail: "DANREM meneruskan surat ke Kepala Staf Korem.",
+          },
+          {
+            title: "Disposisi KASI",
+            detail: "KASREM mendisposisikan surat ke Kepala Seksi terkait.",
+          },
+          {
+            title: "Disposisi PASI",
+            detail: "KASI meneruskan surat ke Perwira Seksi di bawahnya.",
+          },
+          {
+            title: "Penanganan oleh BATI",
+            detail: "PASI menugaskan Bintara untuk mengerjakan tugas.",
+          },
+          {
+            title: "Tindak Lanjut & Arsip",
+            detail: "Setelah selesai, surat dan riwayatnya diarsipkan digital.",
+          },
+        ];
+        const processContainer = document.getElementById("process-container");
+        if (processContainer) {
+          processStepsData.forEach((step, index) => {
+            const stepDiv = document.createElement("div");
+            stepDiv.className = "process-step";
+            stepDiv.innerHTML = `
+                <div class="p-3 bg-white rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:bg-slate-50">
+                   <div class="flex items-center">
+                        <div class="flex-shrink-0 text-white rounded-full h-6 w-6 text-xs flex items-center justify-center font-bold" style="background-color: #f47f20;">${
+                          index + 1
+                        }</div>
+                        <h3 class="ml-3 font-semibold text-slate-800 text-sm">${
+                          step.title
+                        }</h3>
+                   </div>
+                </div>
+                <div class="process-step-content bg-white px-3 pb-3 rounded-b-lg border-x border-b border-slate-200 -mt-2">
+                    <p class="text-slate-600 pt-3 text-xs">${step.detail}</p>
+                </div>
+            `;
+            processContainer.appendChild(stepDiv);
+          });
+          const processSteps = document.querySelectorAll(".process-step");
+          processSteps.forEach((step) => {
+            const header = step.querySelector(".p-3");
+            const content = step.querySelector(".process-step-content");
+            header.addEventListener("click", () => {
+              const isVisible = content.style.maxHeight !== "0px";
+              processSteps.forEach((s) => {
+                s.querySelector(".process-step-content").style.maxHeight =
+                  "0px";
+              });
+              if (!isVisible)
+                content.style.maxHeight = content.scrollHeight + "px";
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
