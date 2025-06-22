@@ -1,5 +1,5 @@
 import { serve } from "bun";
-import homepage from "./src/index.html";
+import homepage from "./public/index.html";
 
 const server = serve({
   port: 3000,
